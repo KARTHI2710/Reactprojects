@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #dff9fb;
+}
+
+.container{
+    background-color: #686de0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 390px;
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    color: white;
+    padding: 1rem;
+}
+.search-container{
+    background-color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.search-container .search{
+    flex: 1;
+    outline: none;
+    border: none;
+    padding: 0.5rem;
+    font-size: 20px;
+}
+.search-container img{
+    height: 30px;
+    padding: 0.2rem;
+    margin-right: 5px;
+}
+.climate-img{
+    height: 150px;
+}
+.weathercontent{
+    text-transform: uppercase;
+    text-align: center;
+}
+.weathercontent .degree{
+    font-size: 30px;
+}
+.weathercontent .city{
+    font-size: 30px;
+    color: #fbc531;
+}
+.lat_log_container{
+    display: flex;
+    gap: 50px;
+    padding: 1rem 0rem;
+    text-align: center;
+}
+.humidity_windspeed_container{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    padding: 2rem 0rem;
+    text-align: center;
+}
+.humidity_windspeed_container img{
+    height: 50px;
+}
