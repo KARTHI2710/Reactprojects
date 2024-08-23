@@ -52,25 +52,52 @@ const Weathercontent = (props) => {
 
 const Weather = () => {
     const [search,setSearch] = useState("");
-    const [degree,setDegree] = useState(33);
-    const [city,setCity] = useState("salem");
-    const [country,setCountry] = useState("in");
-    const [lat,setLat] = useState(11.65);
-    const [log,setLog] = useState(79.1667);
-    const [humidity,setHumidity] = useState(31);
-    const [wind,setWind] = useState(1.54);
+    const [degree,setDegree] = useState();
+    const [city,setCity] = useState("");
+    const [country,setCountry] = useState("");
+    const [lat,setLat] = useState();
+    const [log,setLog] = useState();
+    const [humidity,setHumidity] = useState();
+    const [wind,setWind] = useState();
+    const [loading,setLoading] = useState(false)
 
+    const weathersearch = async () => {
+         setLoading(true);
+         const key="142d478af65bc06ddc53ad26b9b7fe0c";
+         const url=`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${key}&units=metric`
+         try{
+             const res=await fetch(url);
+             const data=await res.json();
+              setCity(data.name);
+              setDegree(data.main.temp);
+              setCountry(data.sys.country);
+              setLat(data.coord.lat);
+              setLog(data.coord.lon);
+              setHumidity(data.main.humidity);
+              setWind(data.wind.speed);
+
+         }catch(error){
+            console.error(error);
+         }finally{
+          setLoading(false);
+         }
+    }
+    const handleKeyDown = (e) =>{
+        if(e.key === 'Enter'){
+          weathersearch();
+        }
+    }
   return (
     <>
        <div className="container">
             <div className="search-container">
-                <input type="text" className="search" />
+                <input type="text" className="search" onChange={(e)=>setSearch(e.target.value)} onKeyDown={handleKeyDown} />
                 <img src={searchlogo} alt="search" />
             </div>
 
-            <img src={cloudslogo} alt="" className="climate-img" />
+            <img src={cloudslogo} alt="" className="climate-img" onClick={weathersearch} />
              
-            <Weathercontent 
+            {!loading && <Weathercontent 
                 degree={degree} 
                 city={city}
                 country={country}
@@ -78,7 +105,7 @@ const Weather = () => {
                 log={log}
                 humidity={humidity}
                 wind={wind}
-            />
+            />}
        </div>
     </>
   )
