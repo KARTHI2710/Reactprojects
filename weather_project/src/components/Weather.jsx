@@ -59,8 +59,31 @@ const Weather = () => {
     const [log,setLog] = useState();
     const [humidity,setHumidity] = useState();
     const [wind,setWind] = useState();
-    const [loading,setLoading] = useState(false)
+    const [loading,setLoading] = useState(false);
+    const [icon,setIcon]=useState(mistlogo);
+    const [notfound,setNotfound]=useState(false)
 
+    const img = {
+      '01d':clearlogo,
+      '02d':clearlogo,
+      '03d':cloudslogo,
+      '04d':cloudslogo,
+      '09d':rainlogo,
+      '10d':rainlogo,
+      '11d':rainlogo,
+      '13d':snowlogo,
+      '50d':mistlogo,
+      '01n':clearlogo,
+      '02n':clearlogo,
+      '03n':cloudslogo,
+      '04n':cloudslogo,
+      '09n':rainlogo,
+      '10n':rainlogo,
+      '11n':rainlogo,
+      '13n':snowlogo,
+      '50n':mistlogo
+    }
+    
     const weathersearch = async () => {
          setLoading(true);
          const key="142d478af65bc06ddc53ad26b9b7fe0c";
@@ -68,6 +91,10 @@ const Weather = () => {
          try{
              const res=await fetch(url);
              const data=await res.json();
+             if (data.cod == 400){
+              setNotfound(true);
+               return
+             }
               setCity(data.name);
               setDegree(data.main.temp);
               setCountry(data.sys.country);
@@ -75,9 +102,12 @@ const Weather = () => {
               setLog(data.coord.lon);
               setHumidity(data.main.humidity);
               setWind(data.wind.speed);
-
+              const weathericon=data.weather[0].icon;
+              setIcon(img[weathericon]);
+              setNotfound(false);
          }catch(error){
-            console.error(error);
+            console.error("Error handled",error);
+            setNotfound(true);
          }finally{
           setLoading(false);
          }
@@ -90,14 +120,14 @@ const Weather = () => {
   return (
     <>
        <div className="container">
-            <div className="search-container">
+            <div className="search-container" onClick={weathersearch}>
                 <input type="text" className="search" onChange={(e)=>setSearch(e.target.value)} onKeyDown={handleKeyDown} />
                 <img src={searchlogo} alt="search" />
             </div>
 
-            <img src={cloudslogo} alt="" className="climate-img" onClick={weathersearch} />
+            {!loading && !notfound && <img src={icon} alt="" className="climate-img"  />}
              
-            {!loading && <Weathercontent 
+            {!loading && !notfound && <Weathercontent 
                 degree={degree} 
                 city={city}
                 country={country}
@@ -106,6 +136,8 @@ const Weather = () => {
                 humidity={humidity}
                 wind={wind}
             />}
+
+            {notfound && <h1>City not found</h1>}
        </div>
     </>
   )
